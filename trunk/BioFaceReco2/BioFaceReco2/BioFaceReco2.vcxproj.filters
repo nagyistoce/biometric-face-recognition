@@ -1,0 +1,139 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;cxx;c;def</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h</Extensions>
+    </Filter>
+    <Filter Include="Form Files">
+      <UniqueIdentifier>{99349809-55BA-4b9d-BF79-8FDBB0286EB3}</UniqueIdentifier>
+      <Extensions>ui</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{D9D6E242-F8AF-46E4-B9FD-80ECBC20BA3E}</UniqueIdentifier>
+      <Extensions>qrc;*</Extensions>
+      <ParseFiles>false</ParseFiles>
+    </Filter>
+    <Filter Include="Generated Files">
+      <UniqueIdentifier>{71ED8ED8-ACB9-4CE9-BBE1-E00B30144E11}</UniqueIdentifier>
+      <Extensions>moc;h;cpp</Extensions>
+      <SourceControlFiles>False</SourceControlFiles>
+    </Filter>
+    <Filter Include="Generated Files\Debug">
+      <UniqueIdentifier>{5b10fe13-e959-47d2-9061-0b9503278885}</UniqueIdentifier>
+      <Extensions>cpp;moc</Extensions>
+      <SourceControlFiles>False</SourceControlFiles>
+    </Filter>
+    <Filter Include="Generated Files\Release">
+      <UniqueIdentifier>{66e88acb-31e3-4462-bea1-374931c65558}</UniqueIdentifier>
+      <Extensions>cpp;moc</Extensions>
+      <SourceControlFiles>False</SourceControlFiles>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{158dc0d0-fc34-4d94-a746-969e8299bfd2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\model">
+      <UniqueIdentifier>{9816d94c-f125-44ba-8d2c-b9845703f568}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\controller">
+      <UniqueIdentifier>{ef52e06e-24c2-4674-b3c4-1926b52e9939}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\utils">
+      <UniqueIdentifier>{5390233a-c7f1-4362-9102-294c2b3fbcd1}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="biofacereco2.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_biofacereco2.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_biofacereco2.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\qrc_biofacereco2.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BioAttributeInfo.cpp">
+      <Filter>src\model</Filter>
+    </ClCompile>
+    <ClCompile Include="FaceData.cpp">
+      <Filter>src\model</Filter>
+    </ClCompile>
+    <ClCompile Include="FaceFinder.cpp">
+      <Filter>src\controller</Filter>
+    </ClCompile>
+    <ClCompile Include="Utilities.cpp">
+      <Filter>src\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Properties.cpp">
+      <Filter>src\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="FaceClassifier.cpp">
+      <Filter>src\controller</Filter>
+    </ClCompile>
+    <ClCompile Include="BioAttributesContainer.cpp">
+      <Filter>src\controller</Filter>
+    </ClCompile>
+    <ClCompile Include="Global.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="ClassifierDatabase.cpp">
+      <Filter>src\controller</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="biofacereco2.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="biofacereco2.ui">
+      <Filter>Form Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="biofacereco2.qrc">
+      <Filter>Resource Files</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="GeneratedFiles\ui_biofacereco2.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BioAttributeInfo.h">
+      <Filter>src\model</Filter>
+    </ClInclude>
+    <ClInclude Include="FaceData.h">
+      <Filter>src\model</Filter>
+    </ClInclude>
+    <ClInclude Include="FaceFinder.h">
+      <Filter>src\controller</Filter>
+    </ClInclude>
+    <ClInclude Include="Utilities.h">
+      <Filter>src\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Properties.h">
+      <Filter>src\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="TSingleton.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="FaceClassifier.h">
+      <Filter>src\controller</Filter>
+    </ClInclude>
+    <ClInclude Include="BioAttributesContainer.h">
+      <Filter>src\controller</Filter>
+    </ClInclude>
+    <ClInclude Include="Global.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="ClassifierDatabase.h">
+      <Filter>src\controller</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
