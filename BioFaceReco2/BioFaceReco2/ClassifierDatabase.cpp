@@ -13,8 +13,12 @@ ClassifierDatabase::~ClassifierDatabase(void)
 void ClassifierDatabase::train() {
 	std::string dbFile = Global::Instance().getProperty("database_xml");
 	std::string dbFolder = Global::Instance().getProperty("database_folder");
+	int dstWidth = atoi(Global::Instance().getProperty("img_width").c_str());
+	int dstHeight = atoi(Global::Instance().getProperty("img_height").c_str());
+
 	std::vector<FaceData> trainingFaces;
 	std::vector<std::string> values;
+	cv::Size dstSize(dstWidth, dstHeight);
 
 	//images for training
 	std::vector<cv::Mat> faceImages;
@@ -42,6 +46,7 @@ void ClassifierDatabase::train() {
 	//std::vector<cv::Mat>::iterator it = faceImages.begin();
 	for(int i = 0; i < trainingFaces.size(); i++) {
 		cv::Mat m = trainingFaces.at(i).image;
+		cv::resize(m, m, dstSize);
 		faceImages.push_back(m);
 	}
 

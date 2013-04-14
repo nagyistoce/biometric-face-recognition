@@ -53,14 +53,31 @@ void BioFaceReco2::processImage() {
 
 	//find faces on picture
 	FaceFinder ff;
-	std::vector<cv::Mat> faces = ff.findInFile(img);
+	EyeFinder ef;
+	std::vector<cv::Mat> faces = ff.findInImage(img);
 
 	//convert to gray, align and resize
 	for(int i = 0; i < faces.size(); i++) {
 		cv::Mat m = faces.at(i);
 		cv::cvtColor(m, m, CV_BGR2GRAY);
+		cv::Size dstSize(dstWidth, dstHeight);
 
 		cv::resize(m, m, cv::Size(dstWidth, dstHeight), cv::INTER_LINEAR);
+		std::vector<cv::Point2f> eyes = ef.findInImage(m);
+		/*
+		if(eyes.size() == 2) {
+			cv::Point2f eye1 = eyes.at(0);
+			cv::Point2f eye2 = eyes.at(1);
+
+			if(eye1.x < eye2.x) {
+				Utilities::cropFace(m, eye1, eye2, cv::Point2d(0.2, 0.2), dstSize);
+			} else {
+				Utilities::cropFace(m, eye2, eye1, cv::Point2d(0.2, 0.2), dstSize);
+			}
+		} else {
+			
+		}
+		*/
 
 		FaceData fd = classifier->classifyFace(m);
 
@@ -88,7 +105,14 @@ void BioFaceReco2::showData(int index) {
 		std::map<std::string,int>::iterator it;
 		std::stringstream ss;
 		for ( it = fd.charactreistic.begin(); it != fd.charactreistic.end(); it++) {
-			ss << it->first << " => " << it->second << '\n';
+			ss << it->first << " => ";
+
+			BioAttributeInfo bai = bac->find(it->first);
+
+			if(bai.name.compare("NULL") != 0) {
+				int key = it->second;
+				ss << bai.attribMap.find(key)->second << '\n';
+			}
 		}
 
 		ui.text->clear();

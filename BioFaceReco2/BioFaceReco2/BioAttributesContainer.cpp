@@ -41,8 +41,18 @@ void BioAttributesContainer::clear() {
 
 BioAttributeInfo BioAttributesContainer::find(std::string name) {
 
-	BioAttributeInfo bai;
+	std::vector<BioAttributeInfo>::iterator it;
 
+	for(it = attrList.begin(); it != attrList.end(); it++) {
+		BioAttributeInfo bai = *it;
+
+		if(bai.name.compare(name) == 0) {
+			return bai;
+		}
+	}
+
+	BioAttributeInfo bai;
+	bai.name = "NULL";
 	return bai;
 
 }

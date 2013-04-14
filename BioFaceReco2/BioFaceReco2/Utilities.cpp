@@ -12,11 +12,19 @@ Utilities::~Utilities(void)
 
 void Utilities::cropFace(cv::Mat& image, cv::Point2d eyeLeft, cv::Point2d eyeRight,cv::Point2d offsetPct, cv::Size destSize) {
 
+	cv::Mat test;
+	image.copyTo(test);
+	cv::circle(test, eyeLeft, 5, cv::Scalar(255, 0, 0)); 
+	cv::circle(test, eyeRight, 5, cv::Scalar(255, 0, 0));
+	std::stringstream ss;
+	ss << eyeLeft.x << "_" << eyeLeft.y;
+	cv::imshow(ss.str(), test);
+
 	double offsetH = std::floor(offsetPct.x * (double)destSize.width);
 	double offsetV = std::floor(offsetPct.y * (double)destSize.height);
 
 	cv::Point2d eyeDirection((eyeRight.x - eyeLeft.x), (eyeRight.y - eyeLeft.y));
-
+	
 	double rotation = -std::atan2(eyeDirection.y, eyeDirection.x);
 	double dist = distance(eyeLeft, eyeRight);
 
@@ -29,7 +37,7 @@ void Utilities::cropFace(cv::Mat& image, cv::Point2d eyeLeft, cv::Point2d eyeRig
 	cv::Size cropSize(destSize.width * scale, destSize.height * scale);
 
 	cv::Rect roi(cropXY.x, cropXY.y, (cropXY.x + cropSize.width), (cropXY.y + cropSize.height));
-	image = image(roi);
+	//image = image(roi);
 
 	cv::resize(image, image, destSize, cv::INTER_LINEAR);
 }
@@ -37,7 +45,7 @@ void Utilities::cropFace(cv::Mat& image, cv::Point2d eyeLeft, cv::Point2d eyeRig
 double Utilities::distance(cv::Point2d p1, cv::Point2d p2) {
 	double dx = p2.x - p1.x;
 	double dy = p2.y - p1.y;
-	return std::sqrt(dx * dx - dy * dy);
+	return std::sqrt(dx * dx + dy * dy);
 }
 
 void Utilities::scaleRotateTranslate(cv::Mat& image, double angle, cv::Point2d center, cv::Point2d newCenter, double scale, int resample) {
