@@ -92,6 +92,9 @@
     <ClCompile Include="EyeFinder.cpp">
       <Filter>src\controller</Filter>
     </ClCompile>
+    <ClCompile Include="Log.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="biofacereco2.ui">
@@ -140,6 +143,9 @@
     </ClInclude>
     <ClInclude Include="EyeFinder.h">
       <Filter>src\controller</Filter>
+    </ClInclude>
+    <ClInclude Include="Log.h">
+      <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

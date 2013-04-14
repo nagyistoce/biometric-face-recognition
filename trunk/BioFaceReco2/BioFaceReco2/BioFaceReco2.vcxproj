@@ -98,6 +98,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="Global.cpp" />
+    <ClCompile Include="Log.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Properties.cpp" />
     <ClCompile Include="Utilities.cpp" />
@@ -137,6 +138,7 @@
     <ClInclude Include="FaceFinder.h" />
     <ClInclude Include="GeneratedFiles\ui_biofacereco2.h" />
     <ClInclude Include="Global.h" />
+    <ClInclude Include="Log.h" />
     <ClInclude Include="Properties.h" />
     <ClInclude Include="TSingleton.h" />
     <ClInclude Include="Utilities.h" />

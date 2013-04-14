@@ -15,11 +15,9 @@ public:
 	FaceFinder(void);
 	~FaceFinder(void);
 	std::vector<cv::Mat> findInImage(cv::Mat image);
-
 	std::vector<cv::Mat> getFacesVector() const;
 
 private:
-	
 	cv::CascadeClassifier haarClassifier;
 	std::vector<cv::Mat> faces;
 	bool success;

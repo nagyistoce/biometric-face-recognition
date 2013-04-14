@@ -4,6 +4,7 @@
 
 #include "TSingleton.h"
 #include "Properties.h"
+#include "Log.h"
 
 class Global : public TSingleton<Global>
 {
@@ -14,6 +15,7 @@ public:
 	void destroy();
 
 	std::string getProperty(std::string key);
+	Log * getLogger() const;
 
 private:
 	Global(void);
@@ -21,6 +23,11 @@ private:
 	bool destroyed;
 
 	Properties* properties;
+	Log * log;
 
 };
+
+inline Log * Global::getLogger() const {
+	return this->log;
+}
 

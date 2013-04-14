@@ -16,12 +16,15 @@ Global::~Global(void)
 void Global::init() {
 
 	properties = new Properties("bio.ini");
-
+	log = new Log("BFR.log");
 	destroyed = false;
 }
 
 void Global::destroy() {
 
+	if(log != NULL) {
+		delete log;
+	}
 	destroyed = true;
 }
 

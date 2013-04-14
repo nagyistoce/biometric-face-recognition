@@ -18,6 +18,7 @@
 #include "EyeFinder.h"
 #include "Utilities.h"
 
+
 class BioFaceReco2 : public QMainWindow
 {
 	Q_OBJECT
@@ -27,6 +28,7 @@ public:
 	~BioFaceReco2();
 
 private:
+	Log * log;
 	Ui::BioFaceReco2Class ui;
 	cv::Mat img;
 	
