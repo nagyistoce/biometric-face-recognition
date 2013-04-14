@@ -3,6 +3,8 @@
 
 FaceFinder::FaceFinder(void) {
 	faces.clear();
+	std::string classFilename = Global::Instance().getProperty("harr_face_classifier");
+	success = haarClassifier.load(classFilename);
 }
 
 FaceFinder::~FaceFinder(void)
@@ -10,14 +12,10 @@ FaceFinder::~FaceFinder(void)
 	faces.clear();
 }
 
-std::vector<cv::Mat> FaceFinder::findInFile(cv::Mat image) {
+std::vector<cv::Mat> FaceFinder::findInImage(cv::Mat image) {
 	
-	std::vector<cv::Rect> facesRect;
-	std::string classFilename = Global::Instance().getProperty("harr_face_classifier");
 	faces.clear();
-	bool success = false;
-
-	success = haarClassifier.load(classFilename);
+	std::vector<cv::Rect> facesRect;
 
 	if(!success) {
 		std::cout << "Wrong cascade classifier filename" << std::endl;

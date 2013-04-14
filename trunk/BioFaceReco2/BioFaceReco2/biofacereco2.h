@@ -15,6 +15,8 @@
 #include "FaceClassifier.h"
 #include "FaceFinder.h"
 #include "FaceData.h"
+#include "EyeFinder.h"
+#include "Utilities.h"
 
 class BioFaceReco2 : public QMainWindow
 {

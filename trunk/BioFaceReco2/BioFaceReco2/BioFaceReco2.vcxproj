@@ -81,6 +81,7 @@
     <ClCompile Include="BioAttributesContainer.cpp" />
     <ClCompile Include="biofacereco2.cpp" />
     <ClCompile Include="ClassifierDatabase.cpp" />
+    <ClCompile Include="EyeFinder.cpp" />
     <ClCompile Include="FaceClassifier.cpp" />
     <ClCompile Include="FaceData.cpp" />
     <ClCompile Include="FaceFinder.cpp" />
@@ -130,6 +131,7 @@
     <ClInclude Include="BioAttributeInfo.h" />
     <ClInclude Include="BioAttributesContainer.h" />
     <ClInclude Include="ClassifierDatabase.h" />
+    <ClInclude Include="EyeFinder.h" />
     <ClInclude Include="FaceClassifier.h" />
     <ClInclude Include="FaceData.h" />
     <ClInclude Include="FaceFinder.h" />

@@ -47,12 +47,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="biofacereco2.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_biofacereco2.cpp">
       <Filter>Generated Files\Debug</Filter>
     </ClCompile>
@@ -89,16 +83,25 @@
     <ClCompile Include="ClassifierDatabase.cpp">
       <Filter>src\controller</Filter>
     </ClCompile>
+    <ClCompile Include="biofacereco2.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="EyeFinder.cpp">
+      <Filter>src\controller</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="biofacereco2.h">
-      <Filter>Header Files</Filter>
-    </CustomBuild>
     <CustomBuild Include="biofacereco2.ui">
       <Filter>Form Files</Filter>
     </CustomBuild>
     <CustomBuild Include="biofacereco2.qrc">
       <Filter>Resource Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="biofacereco2.h">
+      <Filter>src</Filter>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
@@ -133,6 +136,9 @@
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="ClassifierDatabase.h">
+      <Filter>src\controller</Filter>
+    </ClInclude>
+    <ClInclude Include="EyeFinder.h">
       <Filter>src\controller</Filter>
     </ClInclude>
   </ItemGroup>
