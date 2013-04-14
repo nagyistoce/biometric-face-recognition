@@ -7,9 +7,7 @@ FaceFinder::FaceFinder(void) {
 	success = haarClassifier.load(classFilename);
 }
 
-FaceFinder::~FaceFinder(void)
-{
-	faces.clear();
+FaceFinder::~FaceFinder(void) {
 }
 
 std::vector<cv::Mat> FaceFinder::findInImage(cv::Mat image) {

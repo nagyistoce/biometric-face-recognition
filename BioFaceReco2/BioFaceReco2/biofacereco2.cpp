@@ -4,7 +4,7 @@ BioFaceReco2::BioFaceReco2(QWidget *parent)
 	: QMainWindow(parent)
 {
 	Global::Instance().init();
-
+	log = Global::Instance().getLogger();
 	ui.setupUi(this);
 
 	connect(ui.actionOpen, SIGNAL(triggered()), this, SLOT(openImage()));
@@ -16,12 +16,14 @@ BioFaceReco2::BioFaceReco2(QWidget *parent)
 
 	bac = new BioAttributesContainer();
 	bac->load();
+	log->Printf("BioAttributeContainer loaded\n");
 
 	classDb = new ClassifierDatabase(*bac);
 	classDb->train();
+	log->Printf("ClassifierDatabase loaded\n");
 
 	classifier = new FaceClassifier(*bac, *classDb);
-
+	log->Printf("FaceClassifier loaded\n");
 }
 
 BioFaceReco2::~BioFaceReco2()
