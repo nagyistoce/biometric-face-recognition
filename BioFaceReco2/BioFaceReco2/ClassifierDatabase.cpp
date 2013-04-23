@@ -120,12 +120,19 @@ void ClassifierDatabase::train() {
 
 FaceData ClassifierDatabase::parse(XMLElement * e, std::string folder, std::vector<std::string>& values) {
 
+	FaceFinder ff;
 	FaceData data;
 	std::stringstream ss;
 	//read image
 	const char * filename = e->Attribute("file");
 	ss << folder << "//" << filename;
 	cv::Mat image = cv::imread(ss.str());
+	std::vector<cv::Mat> face = ff.findInImage(image);
+
+	if(face.size() == 1) {
+		image = face.at(0);
+	}
+
 	cv::cvtColor(image, image, CV_BGR2GRAY);
 	data.image = image;
 
