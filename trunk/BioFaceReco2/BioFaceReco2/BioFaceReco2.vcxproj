@@ -40,7 +40,7 @@
     <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\libs\opencv-2.4.4\build\include;C:\libs\tinyxml2-msvc\include;$(IncludePath)</IncludePath>
     <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\libs\opencv-2.4.4\build\x86\vc10\lib;C:\libs\tinyxml2-msvc\lib;$(LibraryPath)</LibraryPath>
     <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\libs\opencv-2.4.4\build\include;C:\libs\tinyxml2-msvc\include;$(IncludePath)</IncludePath>
-    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\libs\opencv-2.4.4\build\x86\vc10\lib;$(LibraryPath)</LibraryPath>
+    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\libs\opencv-2.4.4\build\x86\vc10\lib;C:\libs\tinyxml2-msvc\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -70,10 +70,10 @@
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
-      <OutputFile>$(OutDir)\$(ProjectName).exe</OutputFile>
+      <OutputFile>$(OutDir)\bfr.exe</OutputFile>
       <AdditionalLibraryDirectories>$(QTDIR)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>false</GenerateDebugInformation>
-      <AdditionalDependencies>qtmain.lib;Qt5Core.lib;Qt5Gui.lib;Qt5Widgets.lib;Qt5Xml.lib;opencv_core245.lib;opencv_imgproc245.lib;opencv_highgui245.lib;opencv_ml245.lib;opencv_video245.lib;opencv_features2d245.lib;opencv_calib3d245.lib;opencv_objdetect245.lib;opencv_contrib245.lib;opencv_legacy245.lib;opencv_flann245.lib;opencv_nonfree245.lib;tinyxml2.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>qtmain.lib;Qt5Core.lib;Qt5Gui.lib;Qt5Widgets.lib;Qt5Xml.lib;opencv_core244.lib;opencv_imgproc244.lib;opencv_highgui244.lib;opencv_ml244.lib;opencv_video244.lib;opencv_features2d244.lib;opencv_calib3d244.lib;opencv_objdetect244.lib;opencv_contrib244.lib;opencv_legacy244.lib;opencv_flann244.lib;opencv_nonfree244.lib;tinyxml2.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>

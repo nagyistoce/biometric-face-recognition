@@ -8,6 +8,7 @@
 #include "Global.h"
 #include "BioAttributesContainer.h"
 #include "FaceData.h"
+#include "FaceFinder.h"
 
 using namespace tinyxml2;
 
