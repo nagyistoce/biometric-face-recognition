@@ -1,17 +1,18 @@
 #include "BioAttributesContainer.h"
 
 
-BioAttributesContainer::BioAttributesContainer(void)
-{
+BioAttributesContainer::BioAttributesContainer(void) {
+	log = Global::Instance().getLogger();
 }
 
 
-BioAttributesContainer::~BioAttributesContainer(void)
-{
+BioAttributesContainer::~BioAttributesContainer(void) {
 }
 
 
 void BioAttributesContainer::load() {
+	log->Write(INFO, "BioAttributesContainer:Loading attributes");
+
 	std::string xmlFile = Global::Instance().getProperty("keymap_xml");
 
 	XMLDocument doc;
@@ -25,6 +26,7 @@ void BioAttributesContainer::load() {
 			attrList.push_back(info);
 		}
 	}
+	log->Write(INFO, "BioAttributesContainer:Loading end");
 }
 
 void BioAttributesContainer::add(BioAttributeInfo val) {
@@ -32,28 +34,27 @@ void BioAttributesContainer::add(BioAttributeInfo val) {
 }
 
 void BioAttributesContainer::remove(int index) {
-
 }
 
 void BioAttributesContainer::clear() {
 	attrList.clear();
 }
 
-BioAttributeInfo BioAttributesContainer::find(std::string name) {
+BioAttributeInfo * BioAttributesContainer::find(std::string name) const {
+	std::vector<BioAttributeInfo>::const_iterator it;
+	BioAttributeInfo bai;
+	int index = 0;
 
-	std::vector<BioAttributeInfo>::iterator it;
-
-	for(it = attrList.begin(); it != attrList.end(); it++) {
-		BioAttributeInfo bai = *it;
+	for(it = attrList.begin(); it != attrList.end(); it++, index++) {
+		bai = *it;
 
 		if(bai.name.compare(name) == 0) {
-			return bai;
+			return it._Ptr;
 		}
 	}
 
-	BioAttributeInfo bai;
-	bai.name = "NULL";
-	return bai;
+	log->Printf(WARN, "Attribute %s not founded", name.c_str());
+	return NULL;
 
 }
 
@@ -62,12 +63,15 @@ BioAttributeInfo BioAttributesContainer::parse(XMLElement * elem) {
 
 	const char * value = elem->Attribute("value");
 	info.name = std::string(value);
+	log->Printf(INFO, "Parsing attribute %s start", value);
 
 	for(XMLElement * v = elem->FirstChildElement(); v != NULL; v = v->NextSiblingElement()) {
 		std::string attVal(v->GetText());
 		int index = atoi(v->Attribute("index"));
 		info.attribMap.insert(std::pair<int, std::string>(index, attVal));
-	}
 
+		log->Printf(INFO, "%s -> %i", attVal.c_str(), index);
+	}
+	log->Printf(INFO, "Parsing attribute %s end", value);
 	return info;
 }

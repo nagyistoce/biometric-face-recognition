@@ -1,23 +1,26 @@
 #pragma once
 
-#include <qfile.h>
-#include <qtextstream.h>
+#include <string>
+#include <fstream>
+#include <cassert>
+#include <cstdlib>
+#include <cstdio>
+#include <cstdarg>
 
 //Logger
 //Class to crate and write file logs.
-class Log
-{
+class Log {
 public:
-	Log(const char* logName);
+	Log(const char * logName);
 	~Log(void);
-	
+
 	void Write(std::string msg);
-	void Write(const char* msg);
+	void Write(int lvl, std::string msg);
 	void Printf(const char* format, ...);
+	void Printf(int lvl, const char* format, ...);
 
 private:
-	QFile * file;
-	QTextStream * stream;
+	std::ofstream file;
 	bool initialized;
 
 	void Create(const char* logName);

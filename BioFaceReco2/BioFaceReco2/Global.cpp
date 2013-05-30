@@ -1,34 +1,18 @@
 #include "Global.h"
 
 
-Global::Global(void)
-{
-}
-
-
-Global::~Global(void)
-{
-	if(!destroyed) {
-		destroy();
-	}
-}
-
-void Global::init() {
-
+Global::Global(void) {
 	properties = new Properties("bio.ini");
-	log = new Log("BFR.log");
-	destroyed = false;
+	log = new Log("app.log");
 }
 
-void Global::destroy() {
 
+Global::~Global(void) {
 	if(log != NULL) {
 		delete log;
 	}
-	destroyed = true;
 }
 
 std::string Global::getProperty(std::string key) {
-	
 	return properties->getProperty(key);
 }

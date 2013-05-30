@@ -11,5 +11,6 @@ public:
 
 	std::string name;
 	std::map<int, std::string> attribMap;
+
 };
 

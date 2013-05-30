@@ -8,12 +8,12 @@
 #include "Global.h"
 #include "BioAttributesContainer.h"
 #include "FaceData.h"
-#include "FaceFinder.h"
+#include "Log.h"
+#include "FeatureVectorBuilder.h"
 
 using namespace tinyxml2;
 
-class ClassifierDatabase
-{
+class ClassifierDatabase {
 public:
 	ClassifierDatabase(BioAttributesContainer container);
 	~ClassifierDatabase(void);
@@ -23,8 +23,10 @@ public:
 	void train();
 
 private:
+	Log * log;
 	FaceData parse(XMLElement * e, std::string folder, std::vector<std::string>& values);
 	BioAttributesContainer container;
+	FeatureVectorBuilder featuresBuilder;
 
 	cv::Mat norm_0_255(cv::InputArray _src);
 };

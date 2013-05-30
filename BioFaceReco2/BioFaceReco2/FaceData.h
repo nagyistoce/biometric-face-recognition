@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <map>
 #include <opencv2\opencv.hpp>
 
 #include "BioAttribute.h"
@@ -13,6 +14,7 @@ public:
 
 	cv::Mat image;
 	std::map<std::string, int> charactreistic;
+	std::vector<float> features;
 
 };
 

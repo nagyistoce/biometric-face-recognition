@@ -6,6 +6,8 @@
 #include "BioAttributesContainer.h"
 #include "FaceData.h"
 #include "ClassifierDatabase.h"
+#include "Global.h"
+#include "Log.h"
 
 class FaceClassifier
 {
@@ -17,6 +19,8 @@ public:
 
 	BioAttributesContainer container;
 	ClassifierDatabase database;
+private:
+	Log * log;
 
 };
 
