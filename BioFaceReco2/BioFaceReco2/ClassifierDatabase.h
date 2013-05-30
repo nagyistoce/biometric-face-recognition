@@ -4,6 +4,7 @@
 #include <map>
 #include <opencv2\opencv.hpp>
 #include <opencv2\contrib\contrib.hpp>
+#include <opencv2\ml\ml.hpp>
 #include <tinyxml2.h>
 #include "Global.h"
 #include "BioAttributesContainer.h"
@@ -19,9 +20,9 @@ public:
 	~ClassifierDatabase(void);
 
 	std::map<std::string, cv::Ptr<cv::FaceRecognizer>> trainedRecognizers;
-
+	std::map<std::string, cv::Ptr<cv::KNearest>> trainedFeatureRecognizers;
+	
 	void train();
-
 private:
 	Log * log;
 	FaceData parse(XMLElement * e, std::string folder, std::vector<std::string>& values);

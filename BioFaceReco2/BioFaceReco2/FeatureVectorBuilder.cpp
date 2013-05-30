@@ -291,15 +291,16 @@ void FeatureVectorBuilder::findEyes(const cv::Mat& input, int eyeLine, cv::Mat& 
 	}
 
 	//cv::imshow("eyes", eyesRegion);
-	eyes.detectMultiScale(eyesRegion, eyesROI, 1.1, 3, 0 | CV_HAAR_SCALE_IMAGE);
+	//eyes.detectMultiScale(eyesRegion, eyesROI, 1.1, 3, 0 | CV_HAAR_SCALE_IMAGE);
+	eyes.detectMultiScale(input, eyesROI, 1.2, 3, 0 | CV_HAAR_SCALE_IMAGE | CV_HAAR_FEATURE_MAX);
 
 	int mid = input.cols / 2;
 	bool leftEye = false, rightEye = false;
 
 	for(int i = 0; i < eyesROI.size(); i++) {
 		cv::Rect r = eyesROI.at(i);
-		r.x += upper.x;
-		r.y += upper.y;
+		//r.x += upper.x;
+		//r.y += upper.y;
 
 		if(!leftEye && r.x < mid) {
 			input(r).copyTo(outLeftEye);
@@ -403,17 +404,20 @@ void FeatureVectorBuilder::findMouthPoints(const cv::Mat& input, cv::Point& left
 	cv::Mat mouth;
 	input.copyTo(mouth);
 
-	changeContrastBrightness(mouth, 1.1, 0);
+	//changeContrastBrightness(mouth, 1.1, 0);
 
 	if(mouth.channels() != 1) {
 		cv::cvtColor(mouth, mouth, CV_BGR2GRAY);
 	}
 
-	cv::Mat element = cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(3 * 2 + 1, 3 * 2 + 1), cv::Point(3, 3));
-	cv::erode(mouth, mouth, element);
-	//cv::blur(mouth, mouth, cv::Size(3,3));
-	cv::adaptiveThreshold(mouth, mouth, 255, cv::ADAPTIVE_THRESH_MEAN_C, cv::THRESH_BINARY, 9, 15);
+	cv::equalizeHist(mouth, mouth);
+	cv::Mat element = cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(2 * 2 + 1, 2 * 2 + 1), cv::Point(2, 2));
 	cv::morphologyEx(mouth, mouth, cv::MORPH_OPEN, element);
+	//cv::erode(mouth, mouth, element);
+	cv::blur(mouth, mouth, cv::Size(7,7));
+	//cv::adaptiveThreshold(mouth, mouth, 255, cv::ADAPTIVE_THRESH_MEAN_C, cv::THRESH_BINARY, 9, 10);
+	cv::threshold(mouth, mouth, 50, 255, CV_THRESH_BINARY);
+	
 
 	bool rFound = false;
 	bool lFound = false;

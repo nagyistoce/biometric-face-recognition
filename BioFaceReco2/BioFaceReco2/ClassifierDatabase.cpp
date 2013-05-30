@@ -14,6 +14,7 @@ void ClassifierDatabase::train() {
 	std::string dbFolder = Global::Instance().getProperty("database_folder");
 	int dstWidth = atoi(Global::Instance().getProperty("img_width").c_str());
 	int dstHeight = atoi(Global::Instance().getProperty("img_height").c_str());
+	int featureVecSize = atoi(Global::Instance().getProperty("featureVecSize").c_str());
 
 	std::vector<FaceData> trainingFaces;
 	std::vector<std::string> values;
@@ -47,12 +48,33 @@ void ClassifierDatabase::train() {
 	log->Write(INFO, "ClassifierDatabase:Parsing end");
 
 
+	cv::Mat trainingData(trainingFaces.size(), featureVecSize, CV_32FC1);
+	
 	// Features vector
-	log->Write(INFO, "Building features vector begin");
+	log->Write(INFO, "Building features vectors");
 	for(int i = 0; i < trainingFaces.size(); i++) {
 		cv::Mat m = trainingFaces.at(i).image;
 		trainingFaces.at(i).features = featuresBuilder.detectFeatures(m);
+
+		for(int j = 0; j < featureVecSize; j++) {
+			trainingData.at<float>(i, j) = trainingFaces.at(i).features.at(j);
+		}
 	}
+
+	for(int i = 0; i < values.size(); i++) {
+		cv::Mat labels(trainingFaces.size(), 1, CV_32FC1);
+		std::string name = values.at(i);
+
+		for(int j = 0; j < trainingFaces.size(); j++) {
+			int val = trainingFaces.at(j).charactreistic.find(name)->second;
+			labels.at<float>(j, 0) = (float)val;
+		}
+
+		cv::KNearest * kn = new cv::KNearest();
+		kn->train(trainingData, labels);
+		trainedFeatureRecognizers.insert(std::pair<std::string, cv::Ptr<cv::KNearest>>(name, kn));
+	}
+	
 
 	// FisherFaces 
 	log->Write(INFO, "ClassifierDatabase:Preparing images");

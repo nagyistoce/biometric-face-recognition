@@ -56,7 +56,7 @@ void BioFaceReco2::processImage() {
 	
 	int dstWidth = atoi(Global::Instance().getProperty("img_width").c_str());
 	int dstHeight = atoi(Global::Instance().getProperty("img_height").c_str());
-	cv::cvtColor(img, img, CV_BGR2GRAY);
+	//cv::cvtColor(img, img, CV_BGR2GRAY);
 
 	//find faces on picture
 	FaceFinder ff;
@@ -92,6 +92,7 @@ void BioFaceReco2::showData(int index) {
 
 		std::map<std::string,int>::iterator it;
 		std::stringstream ss;
+		ss << "Fisherfaces" << std::endl;
 		for ( it = fd.charactreistic.begin(); it != fd.charactreistic.end(); it++) {
 			ss << it->first << " => ";
 
@@ -99,6 +100,19 @@ void BioFaceReco2::showData(int index) {
 
 			if(bai != NULL) {
 				int key = it->second;
+				ss << bai->attribMap.find(key)->second << '\n';
+			}
+		}
+
+		ss << "Features vectors" << std::endl;
+		std::map<std::string, float>::iterator it2;
+		for ( it2 = fd.featureCharacteristic.begin(); it2 != fd.featureCharacteristic.end(); it2++) {
+			ss << it2->first << " => ";
+
+			BioAttributeInfo * bai = bac->find(it2->first);
+
+			if(bai != NULL) {
+				int key = it2->second;
 				ss << bai->attribMap.find(key)->second << '\n';
 			}
 		}
