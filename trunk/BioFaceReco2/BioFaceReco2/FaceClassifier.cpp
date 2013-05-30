@@ -1,19 +1,19 @@
 #include "FaceClassifier.h"
 
 
-FaceClassifier::FaceClassifier(BioAttributesContainer container, ClassifierDatabase database)
+FaceClassifier::FaceClassifier(BioAttributesContainer container, ClassifierDatabase database) 
 	:container(container), database(database)
 {
+	log = Global::Instance().getLogger();
 }
 
 
-FaceClassifier::~FaceClassifier(void)
-{
+FaceClassifier::~FaceClassifier(void) {
 }
 
 
 FaceData FaceClassifier::classifyFace(cv::Mat face) {
-
+	log->Write(INFO, "FaceClassifier: Classifying image");
 	FaceData fd;
 	std::vector<std::string> values;
 
@@ -31,10 +31,12 @@ FaceData FaceClassifier::classifyFace(cv::Mat face) {
 
 		if(rec != NULL) {
 			int predict = rec->predict(face);
-
+			log->Printf(INFO, "%s -> %i", name.c_str(), predict);
 			fd.charactreistic.insert(std::pair<std::string, int>(name, predict));
 		}
 	}
+
+	log->Write(INFO, "FaceClassifier: Classifying end");
 
 	return fd;
 }

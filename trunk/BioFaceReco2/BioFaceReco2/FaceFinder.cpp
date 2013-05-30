@@ -5,6 +5,7 @@ FaceFinder::FaceFinder(void) {
 	faces.clear();
 	std::string classFilename = Global::Instance().getProperty("harr_face_classifier");
 	success = haarClassifier.load(classFilename);
+	log = Global::Instance().getLogger();
 }
 
 FaceFinder::~FaceFinder(void) {
@@ -16,12 +17,11 @@ std::vector<cv::Mat> FaceFinder::findInImage(cv::Mat image) {
 	std::vector<cv::Rect> facesRect;
 
 	if(!success) {
-		std::cout << "Wrong cascade classifier filename" << std::endl;
+		log->Write(ERROR, "Wrong cascade classifier filename");
 	} else {
 		if(!image.empty()) {
-
 			cv::Mat gray;
-			cv::cvtColor(image, gray, CV_BGR2GRAY);
+			image.copyTo(gray);
 			cv::equalizeHist(gray, gray);
 
 			haarClassifier.detectMultiScale(gray, facesRect, 1.1, 2, 0 | CV_HAAR_SCALE_IMAGE);
@@ -30,7 +30,6 @@ std::vector<cv::Mat> FaceFinder::findInImage(cv::Mat image) {
 				cv::Mat faceROI = image(facesRect[i]);
 				this->faces.push_back(faceROI);
 			}
-
 		}
 	}
 

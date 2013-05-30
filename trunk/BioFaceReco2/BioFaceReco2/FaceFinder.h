@@ -8,6 +8,7 @@
 #include <opencv2\highgui\highgui.hpp>
 
 #include "Global.h"
+#include "Log.h"
 
 class FaceFinder
 {
@@ -21,6 +22,7 @@ private:
 	cv::CascadeClassifier haarClassifier;
 	std::vector<cv::Mat> faces;
 	bool success;
+	Log * log;
 
 };
 

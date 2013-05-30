@@ -85,6 +85,7 @@
     <ClCompile Include="FaceClassifier.cpp" />
     <ClCompile Include="FaceData.cpp" />
     <ClCompile Include="FaceFinder.cpp" />
+    <ClCompile Include="FeatureVectorBuilder.cpp" />
     <ClCompile Include="GeneratedFiles\Debug\moc_biofacereco2.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
@@ -136,6 +137,7 @@
     <ClInclude Include="FaceClassifier.h" />
     <ClInclude Include="FaceData.h" />
     <ClInclude Include="FaceFinder.h" />
+    <ClInclude Include="FeatureVectorBuilder.h" />
     <ClInclude Include="GeneratedFiles\ui_biofacereco2.h" />
     <ClInclude Include="Global.h" />
     <ClInclude Include="Log.h" />

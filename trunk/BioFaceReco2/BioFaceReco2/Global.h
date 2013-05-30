@@ -6,22 +6,24 @@
 #include "Properties.h"
 #include "Log.h"
 
-class Global : public TSingleton<Global>
-{
+enum LogLevel {
+	DBG = 0,
+	INFO = 1,
+	WARN = 2,
+	ERROR = 3
+};
+
+class Global : public TSingleton<Global> {
 	friend TSingleton<Global>;
 
 public:
-	void init();
-	void destroy();
+	Global(void);
+	~Global(void);
 
 	std::string getProperty(std::string key);
 	Log * getLogger() const;
 
 private:
-	Global(void);
-	~Global(void);
-	bool destroyed;
-
 	Properties* properties;
 	Log * log;
 
