@@ -11,8 +11,16 @@ FaceFinder::FaceFinder(void) {
 FaceFinder::~FaceFinder(void) {
 }
 
-std::vector<cv::Mat> FaceFinder::findInImage(cv::Mat image) {
+std::vector<cv::Mat> FaceFinder::findInImage(cv::Mat& input) {
 	
+	cv::Mat image;
+
+	if(input.channels() != 1) {
+		cv::cvtColor(input, image, CV_BGR2GRAY);
+	} else {
+		input.copyTo(image);
+	}
+
 	faces.clear();
 	std::vector<cv::Rect> facesRect;
 
@@ -27,7 +35,7 @@ std::vector<cv::Mat> FaceFinder::findInImage(cv::Mat image) {
 			haarClassifier.detectMultiScale(gray, facesRect, 1.1, 2, 0 | CV_HAAR_SCALE_IMAGE);
 
 			for(int i = 0; i < facesRect.size(); i++) {
-				cv::Mat faceROI = image(facesRect[i]);
+				cv::Mat faceROI = input(facesRect[i]);
 				this->faces.push_back(faceROI);
 			}
 		}

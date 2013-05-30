@@ -14,6 +14,7 @@ public:
 
 	cv::Mat image;
 	std::map<std::string, int> charactreistic;
+	std::map<std::string, float> featureCharacteristic;
 	std::vector<float> features;
 
 };

@@ -15,7 +15,7 @@ class FaceFinder
 public:
 	FaceFinder(void);
 	~FaceFinder(void);
-	std::vector<cv::Mat> findInImage(cv::Mat image);
+	std::vector<cv::Mat> findInImage(cv::Mat& image);
 	std::vector<cv::Mat> getFacesVector() const;
 
 private:

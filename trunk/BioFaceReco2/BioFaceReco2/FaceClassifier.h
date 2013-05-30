@@ -2,12 +2,15 @@
 
 #include <vector>
 #include <string>
+#include <algorithm>
 #include <opencv2\opencv.hpp>
 #include "BioAttributesContainer.h"
 #include "FaceData.h"
 #include "ClassifierDatabase.h"
 #include "Global.h"
 #include "Log.h"
+#include "FeatureVectorBuilder.h"
+
 
 class FaceClassifier
 {
@@ -21,6 +24,8 @@ public:
 	ClassifierDatabase database;
 private:
 	Log * log;
+
+	FeatureVectorBuilder featureBuilder;
 
 };
 

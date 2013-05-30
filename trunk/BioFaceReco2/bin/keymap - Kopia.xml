@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<keymap>
+	<attribute value="sex">
+		<value index="0">male</value>
+		<value index="1">female</value>
+	</attribute>
+	<attribute value="mood">
+		<value index="0">anger</value>
+		<value index="1">disgust</value>
+		<value index="2">fear</value>
+		<value index="3">happines</value>
+		<value index="4">normal</value>
+		<value index="5">saddnes</value>
+	</attribute>
+	<attribute value="age">
+		<value index="0">young</value>
+		<value index="1">mid-age</value>
+		<value index="2">old</value>
+	</attribute>
+</keymap>
