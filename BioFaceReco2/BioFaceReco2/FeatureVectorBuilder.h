@@ -27,7 +27,7 @@ private:
 	void createSingleHistogramImage(cv::Mat& histogram, cv::Mat& output, int histSize, int histW = 512, int histH = 400);
 	void createProjectionHistogram(cv::Mat& projection, cv::Mat& output, int outSize, int type);
 	void createProjections(const cv::Mat& input, cv::Mat& hProjection, cv::Mat& vProjection);
-	void changeContrastBrightness(cv::Mat& input, double contrast, int brightness);
+	void changeContrast(cv::Mat& input, float contrast);
 
 	int faceSize(const cv::Mat& faceImage, int& leftLine, int& rightLine);
 	void createHistogram(cv::Mat input, cv::Mat& output);
