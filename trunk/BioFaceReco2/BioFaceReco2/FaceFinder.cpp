@@ -32,7 +32,7 @@ std::vector<cv::Mat> FaceFinder::findInImage(cv::Mat& input) {
 			image.copyTo(gray);
 			cv::equalizeHist(gray, gray);
 
-			haarClassifier.detectMultiScale(gray, facesRect, 1.1, 2, 0 | CV_HAAR_SCALE_IMAGE);
+			haarClassifier.detectMultiScale(gray, facesRect, 1.2, 3, 0 | CV_HAAR_SCALE_IMAGE | CV_HAAR_FIND_BIGGEST_OBJECT);
 
 			for(int i = 0; i < facesRect.size(); i++) {
 				cv::Mat faceROI = input(facesRect[i]);

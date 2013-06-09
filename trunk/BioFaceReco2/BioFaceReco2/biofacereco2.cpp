@@ -82,7 +82,7 @@ void BioFaceReco2::showData(int index) {
 
 		cv::Mat convertedImage;
 		fd.image.copyTo(convertedImage);
-		cv::cvtColor(convertedImage, convertedImage, CV_GRAY2RGB);
+		cv::cvtColor(convertedImage, convertedImage, CV_BGR2RGB);
 		QImage qimg((const unsigned char*)(convertedImage.data), convertedImage.cols, convertedImage.rows, QImage::Format_RGB888);
 
 		QPixmap map = QPixmap::fromImage(qimg);

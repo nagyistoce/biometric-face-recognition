@@ -15,6 +15,7 @@ void ClassifierDatabase::train() {
 	int dstWidth = atoi(Global::Instance().getProperty("img_width").c_str());
 	int dstHeight = atoi(Global::Instance().getProperty("img_height").c_str());
 	int featureVecSize = atoi(Global::Instance().getProperty("featureVecSize").c_str());
+	std::string saveBase = Global::Instance().getProperty("classifier_save_name_base");
 
 	std::vector<FaceData> trainingFaces;
 	std::vector<std::string> values;
@@ -97,17 +98,31 @@ void ClassifierDatabase::train() {
 			std::string name = values.at(i);
 			cv::Ptr<cv::FaceRecognizer> model = cv::createFisherFaceRecognizer();
 
-			std::vector<int> labels;
-			//create data
-			for(int i = 0; i < trainingFaces.size(); i++) {
-				int tmp = trainingFaces.at(i).charactreistic.find(name)->second;
-				labels.push_back(tmp);
+			std::string file = saveBase + "_fisherfaces" + name + ".xml";
+
+			std::fstream f(file);
+
+			if(f.is_open()) {
+				model->load(file);
+				f.close();
+			} else {
+				std::vector<int> labels;
+				//create data
+				for(int i = 0; i < trainingFaces.size(); i++) {
+					int tmp = trainingFaces.at(i).charactreistic.find(name)->second;
+					labels.push_back(tmp);
+				}
+
+				//train
+				model->train(faceImages, labels);
+				model->save(file);
+
+				//save
+				//trainedRecognizers.insert(std::pair<std::string, cv::Ptr<cv::FaceRecognizer>>(name, model));
+				//log->Printf(INFO, "Trained FaceRecognizer: %s", name.c_str());
+
 			}
 
-			//train
-			model->train(faceImages, labels);
-
-			//save
 			trainedRecognizers.insert(std::pair<std::string, cv::Ptr<cv::FaceRecognizer>>(name, model));
 			log->Printf(INFO, "Trained FaceRecognizer: %s", name.c_str());
 		}

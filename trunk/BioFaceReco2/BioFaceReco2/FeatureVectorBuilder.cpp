@@ -32,8 +32,9 @@ std::vector<float> FeatureVectorBuilder::detectFeatures(const cv::Mat& input) {
 
 	findEyes(input, eyeLine, rEye, lEye, rEyeRect, lEyeRect);
 
-	assert(rEye.data != NULL);
-	assert(lEye.data != NULL);
+	if(rEye.data == NULL || lEye.data == NULL) {
+		return std::vector<float>(7);
+	}
 
 	cv::Point rEyeCenter, lEyeCenter;
 	int rEyeRadius, lEyeRadius;
@@ -49,8 +50,9 @@ std::vector<float> FeatureVectorBuilder::detectFeatures(const cv::Mat& input) {
 	cv::Rect noseRect = findNose(input);
  	input(noseRect).copyTo(nose);
 
-	assert(noseRect.width > 0 && noseRect.height > 0);
-	assert(nose.data != NULL);
+	if((noseRect.width <= 0 && noseRect.height <= 0) || nose.data == NULL) {
+		return std::vector<float>(7);
+	}
 
 	cv::Point noseLeft, noseRight;
 	findNosePoints(nose, noseLeft, noseRight);
@@ -66,8 +68,9 @@ std::vector<float> FeatureVectorBuilder::detectFeatures(const cv::Mat& input) {
 	cv::Rect mouthRect = findMouth(input);
 	input(mouthRect).copyTo(mouth);
 
-	assert(mouthRect.width > 0 && mouthRect.height > 0);
-	assert(mouth.data != NULL);
+	if((mouthRect.width <= 0 && mouthRect.height <= 0) || mouth.data == NULL) {
+		return std::vector<float>(7);
+	}
 
 	findMouthPoints(mouth, left, right, up, down);
 
@@ -82,15 +85,15 @@ std::vector<float> FeatureVectorBuilder::detectFeatures(const cv::Mat& input) {
 
 	cv::circle(cpy, lEyeCenter, 4, cv::Scalar(0, 0, 255));
 	cv::circle(cpy, rEyeCenter, 4, cv::Scalar(0, 0, 255));
-	cv::circle(cpy, noseLeft, 4, cv::Scalar(0, 0, 255));
-	cv::circle(cpy, noseRight, 4, cv::Scalar(0, 0, 255));
-	cv::circle(cpy, left, 4, cv::Scalar(0, 0, 255));
-	cv::circle(cpy, right, 4, cv::Scalar(0, 0, 255));
-	cv::circle(cpy, up, 4, cv::Scalar(0, 0, 255));
-	cv::circle(cpy, down, 4, cv::Scalar(0, 0, 255));
+	cv::circle(cpy, noseLeft, 4, cv::Scalar(0, 255, 0));
+	cv::circle(cpy, noseRight, 4, cv::Scalar(0, 255, 0));
+	cv::circle(cpy, left, 4, cv::Scalar(255, 0, 255));
+	cv::circle(cpy, right, 4, cv::Scalar(255, 0, 255));
+	cv::circle(cpy, up, 4, cv::Scalar(255, 0, 255));
+	cv::circle(cpy, down, 4, cv::Scalar(255, 0, 255));
 
 	std::stringstream ss;
-	ss << "img" << imgNumber << ".jpg";
+	ss << "debug//img" << imgNumber << ".jpg";
 	cv::imwrite(ss.str(), cpy);
 	imgNumber++;
 #endif
@@ -263,7 +266,10 @@ int FeatureVectorBuilder::findEyesLine(const cv::Mat& input) {
 	cv::Mat vProjection;
 
 	cv::cvtColor(input, img, CV_BGR2GRAY);
-	cv::Rect r(0, 0, img.cols, img.rows / 2);
+
+	int y = img.rows / 5;
+	int height = img.rows / 3;
+	cv::Rect r(0, y, img.cols, height);
 	img(r).copyTo(img);
 
 	cv::Sobel(img, img, input.depth(), 1, 0, 3);
@@ -272,7 +278,7 @@ int FeatureVectorBuilder::findEyesLine(const cv::Mat& input) {
 	double min, max;
 	cv::Point minLoc, maxLoc;
 	cv::minMaxLoc(vProjection, &min, &max, &minLoc, &maxLoc);
-	return maxLoc.y;
+	return maxLoc.y + y;
 }
 
 void FeatureVectorBuilder::findEyes(const cv::Mat& input, int eyeLine, cv::Mat& outRightEye, cv::Mat& outLeftEye, cv::Rect& rectRightEye, cv::Rect& rectLeftEye) {
@@ -280,7 +286,7 @@ void FeatureVectorBuilder::findEyes(const cv::Mat& input, int eyeLine, cv::Mat& 
 	cv::Mat eyesRegion;
 	cv::Rect upper;
 
-	if (eyeLine == 0) {
+	/*if (eyeLine == 0) {
 		int third = input.rows / 3;
 		upper = cv::Rect(0, third - third / 3, input.cols, third);
 		input(upper).copyTo(eyesRegion);
@@ -288,19 +294,24 @@ void FeatureVectorBuilder::findEyes(const cv::Mat& input, int eyeLine, cv::Mat& 
 		int val = 0.12f * input.rows;
 		upper = cv::Rect(0, eyeLine - val, input.cols, (2 * val));
 		input(upper).copyTo(eyesRegion);
-	}
+	}*/
+
+	int y = input.rows / 5;
+	int height = input.rows / 3;
+	upper = cv::Rect(0, y, input.cols, height);
+	input(upper).copyTo(eyesRegion);
 
 	//cv::imshow("eyes", eyesRegion);
 	//eyes.detectMultiScale(eyesRegion, eyesROI, 1.1, 3, 0 | CV_HAAR_SCALE_IMAGE);
-	eyes.detectMultiScale(input, eyesROI, 1.2, 3, 0 | CV_HAAR_SCALE_IMAGE | CV_HAAR_FEATURE_MAX);
+	eyes.detectMultiScale(eyesRegion, eyesROI, 1.2, 3, 0 | CV_HAAR_SCALE_IMAGE);
 
 	int mid = input.cols / 2;
 	bool leftEye = false, rightEye = false;
 
 	for(int i = 0; i < eyesROI.size(); i++) {
 		cv::Rect r = eyesROI.at(i);
-		//r.x += upper.x;
-		//r.y += upper.y;
+		r.x += upper.x;
+		r.y += upper.y;
 
 		if(!leftEye && r.x < mid) {
 			input(r).copyTo(outLeftEye);
@@ -319,34 +330,16 @@ void FeatureVectorBuilder::findEyes(const cv::Mat& input, int eyeLine, cv::Mat& 
 		}
 	}
 
-	//if (eyesROI.size() >= 2) {
-	//	cv::Rect r1 = eyesROI.at(0);
-	//	cv::Rect r2 = eyesROI.at(1);
+	if(eyesROI.size() < 2) {
+		cv::Rect left(upper.x, upper.y, upper.width / 2, upper.height);
+		cv::Rect right(upper.x + upper.width / 2, upper.y, upper.width / 2, upper.height);
 
-	//	r1.x += upper.x;
-	//	r1.y += upper.y; // - 5;
-	//	//r1.width += 10;
-	//	//r1.height += 10;
+		rectLeftEye = left;
+		rectRightEye = right;
 
-	//	r2.x += upper.x;
-	//	r2.y += upper.y; // - 5;
-	//	//r2.width += 10;
-	//	//r2.height += 10;
-
-	//	if (r1.x < r2.x) {
-	//		input(r1).copyTo(outLeftEye);
-	//		input(r2).copyTo(outRightEye);
-
-	//		rectLeftEye = r1;
-	//		rectRightEye = r2;
-	//	} else {
-	//		input(r2).copyTo(outLeftEye);
-	//		input(r1).copyTo(outRightEye);
-
-	//		rectLeftEye = cv::Rect(r2);
-	//		rectRightEye = cv::Rect(r1);
-	//	}
-	//}
+		input(left).copyTo(outLeftEye);
+		input(right).copyTo(outRightEye);
+	}
 }
 
 void FeatureVectorBuilder::findEyeCenter(const cv::Mat& input, cv::Point& center, int& radius) {
@@ -366,18 +359,18 @@ void FeatureVectorBuilder::findEyeCenter(const cv::Mat& input, cv::Point& center
 cv::Rect FeatureVectorBuilder::findMouth(const cv::Mat& input) {
 	std::vector<cv::Rect> mouthROI;
 
-	//int third = input.rows / 3;
+	int half = input.rows / 2;
 
-	//cv::Rect lower(0, third * 2, input.cols, third);
-	//cv::Mat lowerFace;
+	cv::Rect lower(0, half, input.cols, half);
+	cv::Mat lowerFace;
 
-	//input(lower).copyTo(lowerFace);
-	mouth.detectMultiScale(input, mouthROI, 1.2, 3, 0 | CV_HAAR_SCALE_IMAGE | CV_HAAR_FEATURE_MAX | CV_HAAR_FIND_BIGGEST_OBJECT);
+	input(lower).copyTo(lowerFace);
+	mouth.detectMultiScale(lowerFace, mouthROI, 1.2, 3, 0 | CV_HAAR_SCALE_IMAGE | CV_HAAR_FEATURE_MAX | CV_HAAR_FIND_BIGGEST_OBJECT);
 
 	if (mouthROI.size() != 0) {
 		cv::Rect r = mouthROI.at(0);
-		//r.x += lower.x - 10;
-		//r.y += lower.y - 10;
+		r.x += lower.x;// - 10;
+		r.y += lower.y;// - 10;
 		//r.width += 20;
 		//r.height += 20;
 		return r;
@@ -386,8 +379,30 @@ cv::Rect FeatureVectorBuilder::findMouth(const cv::Mat& input) {
 	return cv::Rect();
 }
 
-void FeatureVectorBuilder::changeContrastBrightness(cv::Mat& input, double contrast, int brightness) {
-	for( int y = 0; y < input.rows; y++ ) {
+void FeatureVectorBuilder::changeContrast(cv::Mat& input, float a) {
+
+	cv::Mat lut(1, 256, CV_8UC1);
+	unsigned int imax = lut.cols - 1;
+
+	for(unsigned int i = 0; i < lut.cols; i++) {
+		unsigned int val = 0;
+
+		float v = (a*(i - (imax/2.0f))) + (imax/2.0f);
+
+		if(v < 0) {
+			val = 0;
+		} else if( v >= 0 && v <= imax) {
+			val = (unsigned int)v;
+		} else {
+			val = imax;
+		}
+
+		lut.at<char>(0, i) = val;
+	}
+
+	cv::LUT(input, lut, input);
+
+	/*for( int y = 0; y < input.rows; y++ ) {
 		for( int x = 0; x < input.cols; x++ ) {
 			if(input.channels() == 3) {
 				for( int c = 0; c < 3; c++ ) { 
@@ -397,7 +412,7 @@ void FeatureVectorBuilder::changeContrastBrightness(cv::Mat& input, double contr
 				input.at<uchar>(y,x) = cv::saturate_cast<uchar>( contrast *( input.at<uchar>(y,x)) + brightness );
 			}
 		}
-	}
+	}*/
 }
 
 void FeatureVectorBuilder::findMouthPoints(const cv::Mat& input, cv::Point& left, cv::Point& right, cv::Point& up, cv::Point& down) {
@@ -410,14 +425,27 @@ void FeatureVectorBuilder::findMouthPoints(const cv::Mat& input, cv::Point& left
 		cv::cvtColor(mouth, mouth, CV_BGR2GRAY);
 	}
 
-	cv::equalizeHist(mouth, mouth);
-	cv::Mat element = cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(2 * 2 + 1, 2 * 2 + 1), cv::Point(2, 2));
-	cv::morphologyEx(mouth, mouth, cv::MORPH_OPEN, element);
-	//cv::erode(mouth, mouth, element);
-	cv::blur(mouth, mouth, cv::Size(7,7));
+	//cv::equalizeHist(mouth, mouth);
+	//cv::Mat element = cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(2 * 2 + 1, 2 * 2 + 1), cv::Point(2, 2));
+	//cv::morphologyEx(mouth, mouth, cv::MORPH_OPEN, element);
+	////cv::erode(mouth, mouth, element);
+	//cv::blur(mouth, mouth, cv::Size(7,7));
 	//cv::adaptiveThreshold(mouth, mouth, 255, cv::ADAPTIVE_THRESH_MEAN_C, cv::THRESH_BINARY, 9, 10);
-	cv::threshold(mouth, mouth, 50, 255, CV_THRESH_BINARY);
+	//cv::threshold(mouth, mouth, 50, 255, CV_THRESH_BINARY);
 	
+	cv::Mat reduceFilter = (cv::Mat_<char>(3,3) << 0, 0, 0, 0, 2, 0, 0, 0, 0); 
+	cv::Mat laplaceFilter = (cv::Mat_<char>(3,3) << -1, -1, -1, -1, 9, -1, -1, -1, -1); 
+
+	//changeContrast(mouth, 1.5f);
+	cv::blur(mouth, mouth, cv::Size(3,3));
+	cv::filter2D(mouth, mouth, mouth.depth(), laplaceFilter);
+	cv::Mat element = cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(1 * 2 + 1, 1 * 2 + 1), cv::Point(1, 1));
+	cv::erode(mouth, mouth, element);
+	cv::blur(mouth, mouth, cv::Size(3,3));
+	cv::filter2D(mouth, mouth, mouth.depth(), reduceFilter);
+	cv::normalize(mouth, mouth, 0, 255, cv::NORM_MINMAX);
+	cv::blur(mouth, mouth, cv::Size(3,3));
+	cv::threshold(mouth, mouth, 127, 255, CV_THRESH_BINARY);
 
 	bool rFound = false;
 	bool lFound = false;
@@ -428,7 +456,7 @@ void FeatureVectorBuilder::findMouthPoints(const cv::Mat& input, cv::Point& left
 		cv::Mat fromRight = mouth.col(mouth.cols - x - 1);
 
 		if(!lFound) {
-			for(int y = 0; y < fromLeft.rows; y++) {
+			for(int y = 5; y < fromLeft.rows - 5; y++) {
 				if(fromLeft.at<uchar>(y, 0) == 0) {
 					left.x = x;
 					left.y = y;
@@ -438,7 +466,7 @@ void FeatureVectorBuilder::findMouthPoints(const cv::Mat& input, cv::Point& left
 		}
 
 		if(!rFound) {
-			for(int y = 0; y < fromRight.rows; y++) {
+			for(int y = 5; y < fromRight.rows - 5; y++) {
 				if(fromRight.at<uchar>(y, 0) == 0) {
 					right.x = mouth.cols - x - 1;
 					right.y = y;
@@ -496,6 +524,11 @@ void FeatureVectorBuilder::findNosePoints(const cv::Mat& input, cv::Point& left,
 		cv::cvtColor(nose, nose, CV_BGR2GRAY);
 	}
 
+	/*cv::Mat laplaceFilter = (cv::Mat_<char>(3,3) << -1, -1, -1, -1, 9, -1, -1, -1, -1); 
+	cv::filter2D(nose, nose, nose.depth(), laplaceFilter);*/
+	cv::Mat element = cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(1 * 2 + 1, 1 * 2 + 1), cv::Point(1, 1));
+	cv::erode(nose, nose, element);
+	//cv::Laplacian(nose, nose, nose.depth(), 3); 
 	cv::blur(nose, nose, cv::Size(3,3));
 	cv::adaptiveThreshold(nose, nose, 255, cv::ADAPTIVE_THRESH_MEAN_C, cv::THRESH_BINARY, 9, 10);
 
@@ -508,7 +541,7 @@ void FeatureVectorBuilder::findNosePoints(const cv::Mat& input, cv::Point& left,
 		cv::Mat fromRight = nose.col(nose.cols - x - 1);
 
 		if(!lFound) {
-			for(int y = 0; y < fromLeft.rows; y++) {
+			for(int y = 5; y < fromLeft.rows - 5; y++) {
 				if(fromLeft.at<uchar>(y, 0) == 0) {
 					left.x = x;
 					left.y = y;
@@ -518,7 +551,7 @@ void FeatureVectorBuilder::findNosePoints(const cv::Mat& input, cv::Point& left,
 		}
 
 		if(!rFound) {
-			for(int y = 0; y < fromRight.rows; y++) {
+			for(int y = 5; y < fromRight.rows - 5; y++) {
 				if(fromRight.at<uchar>(y, 0) == 0) {
 					right.x = nose.cols - x - 1;
 					right.y = y;
